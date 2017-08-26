@@ -118,6 +118,8 @@ while 1
                     setparam(tg,'StateMachine/Subsystem/parDesPosA2','Value',-poses_subscriber.LatestMessage.Position.Y);
                     setparam(tg,'StateMachine/Subsystem/parDesVelA1','Value',-poses_subscriber.LatestMessage.Orientation.X);
                     setparam(tg,'StateMachine/Subsystem/parDesVelA2','Value',-poses_subscriber.LatestMessage.Orientation.Y);
+                    setparam(tg,'StateMachine/parDesPosA3','Value',-poses_subscriber.LatestMessage.Position.Z);
+                                        
                 end
              end
         end
