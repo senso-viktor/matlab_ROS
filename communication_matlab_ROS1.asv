@@ -50,7 +50,6 @@ tg.stop
     J3_mo = 0;
     J3_mc = 0;
     J3_pb = 0;
-    J3_pb_last = 0;
     J3_lb = 0;
     J3_lb_last = 0;
 
@@ -161,7 +160,7 @@ while 1
     
     
     %Get signal values from simulink
-    [J1_pos,J2_pos,J3_pos,J1_torq,J2_torq,J3_mo,J3_mc,J3_pb,J3_lb] = getSignalValues(tg, J1_pos_id, J2_pos_id, J3_pos_id, J1_torq_id, J2_torq_id, J3_mo_id, J3_mc_id, J3_pb_id, J3_lb_id);
+    [J1_pos,J2_pos,J3_pos,J1_torq,J2_torq,J3_mo,J3_mc,J3_pb,J3_lb] = getSignalValues(tg, J1_pos_id, J2_pos_id, J3_pos_id, J1_torq_id, J2_torq_id, J3_mo_id, J3_mc_id, J3_pb_id);
     [J1_vel, J1_acc, J2_vel, J2acc, J3_vel, J3_acc] = getVelAndAccValues(tg, J1_vel_id, J1_acc_id, J2_vel_id, J2_acc_id, J3_vel_id, J3_acc_id);
     time = rostime('now');
     joint_state_msg.Header.Stamp = time;
@@ -174,8 +173,10 @@ while 1
     acceleration_msg.Y = J2_acc;
     acceleration_msg.Z = J3_acc;
     send(acc_pub,acceleration_msg);
-
-        tic
+    J1_vel
+    J1_acc
+     
+         tic
         %subscribe to desired poses and velocities and set these poses to
         %simulink
         if (poses_subscriber.isvalid)
@@ -208,20 +209,9 @@ while 1
             end
         end
         
-        %send light barrier state
-        if J3_lb ~= J3_lb_last
-            lightbarrier_msg.Data = J3_lb;
-            send(lightbarrier_pub,lightbarrier_msg);
-            J3_lb_last = J3_lb;
-        end
-
         %send button state
-        if J3_pb ~= J3_pb_last
-            pushbutton_msg.Data = J3_pb;
-            send(pushbutton_pub,pushbutton_msg);
-            J3_pb_last = J3_pb;
-        end
-
+        pushbutton_msg.Data = J3_pb;
+        send(pushbutton_pub,pushbutton_msg);
         if init == 1
             %set gripper on/off
             if gripper_subscriber.isvalid

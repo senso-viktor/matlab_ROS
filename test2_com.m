@@ -75,6 +75,8 @@ tg.stop
     poses_subscriber = robotics.ros.Subscriber(node3, '/planned_poses_and_velocities', 'geometry_msgs/Pose');
     pause(1);
     disp('.............Subscriber created...................')
+    
+  
 
 %start simulink realtime
     setparam(tg,'controlParams/parDemo','Value', 6);
